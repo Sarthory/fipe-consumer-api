@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-FipeConsumer.Worker-e59fefb8-e595-45d8-8117-2a017dbdc5bc</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire" Version="1.8.18" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.18" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FipeConsumer.Application\FipeConsumer.Application.csproj" />
+    <ProjectReference Include="..\FipeConsumer.Infrastructure\FipeConsumer.Infrastructure.csproj" />
+    <ProjectReference Include="..\FipeConsumer.Jobs\FipeConsumer.Jobs.csproj" />
+  </ItemGroup>
+</Project>
