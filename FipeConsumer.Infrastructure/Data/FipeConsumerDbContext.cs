@@ -9,6 +9,7 @@ namespace FipeConsumer.Infrastructure.Data
         public DbSet<Model> Models { get; set; }
         public DbSet<Year> Years { get; set; }
         public DbSet<Price> Prices { get; set; }
+        public DbSet<Job> Jobs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -17,6 +18,8 @@ namespace FipeConsumer.Infrastructure.Data
             modelBuilder.Entity<Model>().HasKey(m => m.ModelId);
 
             modelBuilder.Entity<Year>().HasKey(y => y.YearId);
+
+            modelBuilder.Entity<Job>().HasKey(j => j.JobId);
 
             modelBuilder.Entity<Price>()
                 .HasKey(p => p.PriceId);

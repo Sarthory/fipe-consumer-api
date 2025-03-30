@@ -18,7 +18,10 @@ builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<IModelRepository, ModelRepository>();
 builder.Services.AddScoped<IYearRepository, YearRepository>();
 builder.Services.AddScoped<IPriceRepository, PriceRepository>();
+builder.Services.AddScoped<IWorkerRepository, Workerrepository>();
+
 builder.Services.AddScoped<FipeDataSyncService>();
+builder.Services.AddScoped<WorkerService>();
 
 builder.Services.AddHttpClient<FipeApiClient>();
 builder.Services.AddTransient<IFipeUpsertJob, FipeUpsertJob>();
