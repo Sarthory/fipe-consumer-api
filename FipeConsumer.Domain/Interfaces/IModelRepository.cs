@@ -4,9 +4,9 @@ namespace FipeConsumer.Domain.Interfaces
 {
     public interface IModelRepository
     {
-        Task<IEnumerable<Model>> GetAllModelsAsync();
+        Task<List<Model>> GetAllModelsAsync();
 
-        Task<Model?> GetModelByCodeAsync(int modelCode);
+        Task<List<Model>> GetModelsByBrandCodeAsync(string brandCode);
 
         Task UpsertModelAsync(Model model, string brandCode);
 

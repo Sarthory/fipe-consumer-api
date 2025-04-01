@@ -7,7 +7,7 @@ namespace FipeConsumer.Application.Services
     {
         private readonly IBrandRepository _brandRepository = brandRepository;
 
-        public async Task<IEnumerable<Brand>> GetBrandsAsync()
+        public async Task<List<Brand>> GetBrandsAsync()
         {
             return await _brandRepository.GetAllBrandsAsync();
         }

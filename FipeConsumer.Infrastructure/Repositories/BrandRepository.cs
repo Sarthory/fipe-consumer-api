@@ -14,11 +14,6 @@ namespace FipeConsumer.Infrastructure.Repositories
             return await _context.Brands.ToListAsync();
         }
 
-        public async Task<Brand?> GetBrandByCodeAsync(string code)
-        {
-            return await _context.Brands.FirstOrDefaultAsync(b => b.Code == code);
-        }
-
         public async Task UpsertBrandAsync(Brand brand)
         {
             var existing = await _context.Brands.FirstOrDefaultAsync(b => b.Code == brand.Code);
@@ -26,8 +21,8 @@ namespace FipeConsumer.Infrastructure.Repositories
             if (existing == null) _context.Brands.Add(brand);
             else
             {
-                existing.Name = brand.Name;
-                existing.Code = brand.Code;
+                Brand.CopyProperties(brand, existing);
+                _context.Brands.Update(existing);
             }
 
             await _context.SaveChangesAsync();
@@ -45,14 +40,11 @@ namespace FipeConsumer.Infrastructure.Repositories
                 {
                     var existingBrand = existingBrands?.FirstOrDefault(b => b.Code == brand.Code);
 
-                    if (existingBrand != null)
-                    {
-                        existingBrand.Name = brand.Name;
-                        existingBrand.Code = brand.Code;
-                    }
+                    if (existingBrand == null) _context.Brands.Add(brand);
                     else
                     {
-                        _context.Brands.Add(brand);
+                        Brand.CopyProperties(brand, existingBrand);
+                        _context.Brands.Update(existingBrand);
                     }
                 }
 

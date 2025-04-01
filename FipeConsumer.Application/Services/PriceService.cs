@@ -7,14 +7,14 @@ namespace FipeConsumer.Application.Services
     {
         private readonly IPriceRepository _priceRepository = priceRepository;
 
-        public async Task<IEnumerable<Price>> GetAllPricesAsync()
+        public async Task<List<Price>> GetAllPricesAsync()
         {
             return await _priceRepository.GetAllPricesAsync();
         }
 
-        public async Task<Price?> GEtSpecificPriceAsync(Brand brand, Model model, Year year)
+        public async Task<Price?> GetSpecificPriceAsync(string brandCode, int modelCode, string yearCode)
         {
-            return await _priceRepository.GetSpecificPriceAsync(brand, model, year);
+            return await _priceRepository.GetSpecificPriceAsync(brandCode, modelCode, yearCode);
         }
 
         public async Task UpsertPriceAsync(Price price, string brandCode, int modelCode, string yearCode)

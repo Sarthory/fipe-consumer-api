@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace FipeConsumer.Domain.Entities
 {
@@ -10,29 +9,21 @@ namespace FipeConsumer.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PriceId { get; set; }
 
-        [JsonPropertyName("Valor")]
-        public string Value { get; set; } = string.Empty;
+        public required string Value { get; set; }
 
-        [JsonPropertyName("Marca")]
-        public string BrandName { get; set; } = string.Empty;
+        public required string BrandName { get; set; }
 
-        [JsonPropertyName("Modelo")]
-        public string ModelName { get; set; } = string.Empty;
+        public required string ModelName { get; set; }
 
-        [JsonPropertyName("AnoModelo")]
-        public int ModelYear { get; set; }
+        public required int ModelYear { get; set; }
 
-        [JsonPropertyName("Combustivel")]
-        public string Fuel { get; set; } = string.Empty;
+        public required string Fuel { get; set; }
 
-        [JsonPropertyName("CodigoFipe")]
-        public string FipeCode { get; set; } = string.Empty;
+        public required string FipeCode { get; set; }
 
-        [JsonPropertyName("MesReferencia")]
-        public string ReferenceMonth { get; set; } = string.Empty;
+        public required string ReferenceMonth { get; set; }
 
-        [JsonPropertyName("SiglaCombustivel")]
-        public string FuelAbbreviation { get; set; } = string.Empty;
+        public required string FuelAbbreviation { get; set; }
 
         [ForeignKey("Brand")]
         public int BrandId { get; set; }
@@ -45,5 +36,23 @@ namespace FipeConsumer.Domain.Entities
         [ForeignKey("Year")]
         public int YearId { get; set; }
         public virtual Year? Year { get; set; }
+
+        public static void CopyProperties(Price source, Price target)
+        {
+            var properties = typeof(Price).GetProperties();
+            foreach (var property in properties)
+            {
+                if (property.CanWrite &&
+                    property.Name != nameof(PriceId) &&
+                    property.Name != nameof(BrandId) &&
+                    property.Name != nameof(ModelId) &&
+                    property.Name != nameof(YearId))
+                {
+                    property.SetValue(target, property.GetValue(source));
+                }
+            }
+        }
     }
+
+
 }

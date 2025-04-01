@@ -4,9 +4,9 @@ namespace FipeConsumer.Domain.Interfaces
 {
     public interface IYearRepository
     {
-        Task<IEnumerable<Year>> GetAllYearsAsync();
+        Task<List<Year>> GetAllYearsAsync();
 
-        Task<Year?> GetYearByCodeAsync(string codigo);
+        Task<List<Year>> GetYearsByModelCodeAsync(int modelCode);
 
         Task UpsertYearAsync(Year year, int modelCode);
 

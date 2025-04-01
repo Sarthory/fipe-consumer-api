@@ -9,29 +9,35 @@ namespace FipeConsumer.Infrastructure.Repositories
     {
         private readonly FipeConsumerDbContext _context = context;
 
-        public async Task<IEnumerable<Year>> GetAllYearsAsync()
+        public async Task<List<Year>> GetAllYearsAsync()
         {
             return await _context.Years.ToListAsync();
         }
 
-        public async Task<Year?> GetYearByCodeAsync(string code)
+        public Task<List<Year>> GetYearsByModelCodeAsync(int modelCode)
         {
-            return await _context.Years.FirstOrDefaultAsync(m => m.Code == code);
+            return _context.Years
+                .Include(y => y.Model)
+                .Where(y => y.Model != null && y.Model.Code == modelCode)
+                .ToListAsync();
         }
 
         public async Task UpsertYearAsync(Year year, int modelCode)
         {
-            var existingYear = await _context.Years.FirstOrDefaultAsync(m => m.Code == year.Code);
-            var model = await _context.Models.FirstOrDefaultAsync(m => m.Code == modelCode) ?? throw new Exception("Model not found");
+            var existingYear = await _context.Years.Include(y => y.Model)
+                                                   .FirstOrDefaultAsync(y => y.Code == year.Code &&
+                                                                        y.Model != null &&
+                                                                        y.Model.Code == modelCode);
+
+            var model = await _context.Models.FirstOrDefaultAsync(m => m.Code == modelCode) ?? throw new Exception("Model not found.");
 
             year.Model = model;
 
             if (existingYear == null) _context.Years.Add(year);
             else
             {
-                existingYear.Name = year.Name;
-                existingYear.Code = year.Code;
-                existingYear.Model = year.Model;
+                Year.CopyProperties(year, existingYear);
+                _context.Years.Update(existingYear);
             }
 
             await _context.SaveChangesAsync();
@@ -50,17 +56,15 @@ namespace FipeConsumer.Infrastructure.Repositories
                 foreach (var year in years)
                 {
                     year.Model = model;
-                    var existingYear = existingYears?.FirstOrDefault(y => y.Code == year.Code);
+                    var existingYear = existingYears?.FirstOrDefault(y => y.Code == year.Code &&
+                                                                     y.Model != null &&
+                                                                     y.Model.Code == modelCode);
 
-                    if (existingYear != null)
-                    {
-                        existingYear.Name = year.Name;
-                        existingYear.Code = year.Code;
-                        existingYear.Model = year.Model;
-                    }
+                    if (existingYear == null) _context.Years.Add(year);
                     else
                     {
-                        _context.Years.Add(year);
+                        Year.CopyProperties(year, existingYear);
+                        _context.Years.Update(existingYear);
                     }
                 }
 

@@ -7,9 +7,9 @@ namespace FipeConsumer.Application.Services
     {
         private readonly IModelRepository _modelRepository = modelRepository;
 
-        public async Task<IEnumerable<Model>> GetModelsAsync()
+        public async Task<List<Model>> GetModelsByBrandCodeAsync(string brandCode)
         {
-            return await _modelRepository.GetAllModelsAsync();
+            return await _modelRepository.GetModelsByBrandCodeAsync(brandCode);
         }
 
         public async Task UpsertModelAsync(Model model, string brandCode)

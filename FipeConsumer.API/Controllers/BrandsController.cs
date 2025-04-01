@@ -7,6 +7,7 @@ namespace FipeConsumer.API.Controllers
     [Route("api/[controller]")]
     public class BrandsController(BrandService service) : ControllerBase
     {
+
         private readonly BrandService _service = service;
 
         [HttpGet]

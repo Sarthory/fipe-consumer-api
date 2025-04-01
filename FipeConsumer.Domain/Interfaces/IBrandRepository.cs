@@ -6,8 +6,6 @@ namespace FipeConsumer.Domain.Interfaces
     {
         Task<List<Brand>> GetAllBrandsAsync();
 
-        Task<Brand?> GetBrandByCodeAsync(string code);
-
         Task UpsertBrandAsync(Brand brand);
 
         Task BatchUpsertBrandsAsync(List<Brand> brands);

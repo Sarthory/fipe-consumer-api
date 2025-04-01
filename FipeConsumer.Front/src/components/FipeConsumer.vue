@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { useFipeBrands } from "@/composables/useFipeBrands";
 
-const { filter, filteredBrands } = useFipeBrands(); // brands e fetchBrands podem ser usados se necessário
+const { filter, filteredBrands } = useFipeBrands();
 </script>
 
 <style scoped>

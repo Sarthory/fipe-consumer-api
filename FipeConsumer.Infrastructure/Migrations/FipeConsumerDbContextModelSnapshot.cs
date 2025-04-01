@@ -32,13 +32,11 @@ namespace FipeConsumer.Infrastructure.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "codigo");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "nome");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BrandId");
 
@@ -91,13 +89,11 @@ namespace FipeConsumer.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Code")
-                        .HasColumnType("int")
-                        .HasAnnotation("Relational:JsonPropertyName", "codigo");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "nome");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ModelId");
 
@@ -119,45 +115,37 @@ namespace FipeConsumer.Infrastructure.Migrations
 
                     b.Property<string>("BrandName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "Marca");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FipeCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "CodigoFipe");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Fuel")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "Combustivel");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FuelAbbreviation")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "SiglaCombustivel");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("ModelName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "Modelo");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ModelYear")
-                        .HasColumnType("int")
-                        .HasAnnotation("Relational:JsonPropertyName", "AnoModelo");
+                        .HasColumnType("int");
 
                     b.Property<string>("ReferenceMonth")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "MesReferencia");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "Valor");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("YearId")
                         .HasColumnType("int");
@@ -183,16 +171,14 @@ namespace FipeConsumer.Infrastructure.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "codigo");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "nome");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("YearId");
 

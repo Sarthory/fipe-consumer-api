@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace FipeConsumer.Domain.Entities
 {
@@ -10,26 +9,20 @@ namespace FipeConsumer.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BrandId { get; set; }
 
-        [JsonPropertyName("codigo")]
         public required string Code { get; set; }
 
-        [JsonPropertyName("nome")]
         public required string Name { get; set; }
-    }
 
-    public class BrandComparer : IEqualityComparer<Brand>
-    {
-        public bool Equals(Brand? x, Brand? y)
+        public static void CopyProperties(Brand source, Brand target)
         {
-            if (x == null || y == null)
-                return false;
-
-            return x.Code == y.Code;
-        }
-
-        public int GetHashCode(Brand obj)
-        {
-            return obj.Code.GetHashCode();
+            var properties = typeof(Brand).GetProperties();
+            foreach (var property in properties)
+            {
+                if (property.CanWrite && property.Name != nameof(BrandId))
+                {
+                    property.SetValue(target, property.GetValue(source));
+                }
+            }
         }
     }
 }

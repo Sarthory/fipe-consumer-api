@@ -1,6 +1,5 @@
-<!-- src/App.vue -->
 <template>
-  <div id="app">
+  <div>
     <header>
       <h1>Minha Aplicação FIPE</h1>
     </header>
@@ -13,12 +12,9 @@
   </div>
 </template>
 
-<script setup lang="ts">
-// Você pode colocar aqui lógicas globais ou imports necessários
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
-/* Estilos globais ou específicos do App */
 #app {
   display: flex;
   flex-direction: column;

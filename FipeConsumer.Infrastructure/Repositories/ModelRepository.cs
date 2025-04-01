@@ -9,14 +9,17 @@ namespace FipeConsumer.Infrastructure.Repositories
     {
         private readonly FipeConsumerDbContext _context = context;
 
-        public async Task<IEnumerable<Model>> GetAllModelsAsync()
+        public async Task<List<Model>> GetAllModelsAsync()
         {
             return await _context.Models.ToListAsync();
         }
 
-        public async Task<Model?> GetModelByCodeAsync(int modelCode)
+        public async Task<List<Model>> GetModelsByBrandCodeAsync(string brandCode)
         {
-            return await _context.Models.FirstOrDefaultAsync(m => m.Code == modelCode);
+            return await _context.Models
+                .Include(m => m.Brand)
+                .Where(m => m.Brand != null && m.Brand.Code == brandCode)
+                .ToListAsync();
         }
 
         public async Task UpsertModelAsync(Model model, string brandCode)
@@ -28,9 +31,8 @@ namespace FipeConsumer.Infrastructure.Repositories
             if (existingModel == null) _context.Models.Add(model);
             else
             {
-                existingModel.Name = model.Name;
-                existingModel.Code = model.Code;
-                existingModel.Brand = model.Brand;
+                Model.CopyProperties(model, existingModel);
+                _context.Models.Update(existingModel);
             }
 
             await _context.SaveChangesAsync();
@@ -51,15 +53,11 @@ namespace FipeConsumer.Infrastructure.Repositories
                     model.Brand = brand;
                     var existingModel = existingModels?.FirstOrDefault(m => m.Code == model.Code);
 
-                    if (existingModel != null)
-                    {
-                        existingModel.Name = model.Name;
-                        existingModel.Code = model.Code;
-                        existingModel.Brand = model.Brand;
-                    }
+                    if (existingModel == null) _context.Models.Add(model);
                     else
                     {
-                        _context.Models.Add(model);
+                        Model.CopyProperties(model, existingModel);
+                        _context.Models.Update(existingModel);
                     }
                 }
 

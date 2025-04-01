@@ -7,15 +7,14 @@ namespace FipeConsumer.Application.Services
     {
         private readonly IYearRepository _yearRepository = yearRepository;
 
-        public async Task<IEnumerable<Year>> GetYearsAsync()
+        public async Task<List<Year>> GetAllYearsAsync()
         {
             return await _yearRepository.GetAllYearsAsync();
         }
 
-        public async Task UpsertYearAsync(Year year, int modelCode)
+        public async Task<List<Year>> GetYearsByModelCodeAsync(int modelCode)
         {
-            await _yearRepository.UpsertYearAsync(year, modelCode);
+            return await _yearRepository.GetYearsByModelCodeAsync(modelCode);
         }
-
     }
 }

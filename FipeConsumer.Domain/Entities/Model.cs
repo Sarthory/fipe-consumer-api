@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using FipeConsumer.Domain.Dtos;
 
 namespace FipeConsumer.Domain.Entities
 {
@@ -10,31 +11,27 @@ namespace FipeConsumer.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ModelId { get; set; }
 
-        [JsonPropertyName("codigo")]
         public required int Code { get; set; }
 
-        [JsonPropertyName("nome")]
         public required string Name { get; set; }
 
         [ForeignKey("Brand")]
         public int BrandId { get; set; }
 
         public virtual Brand? Brand { get; set; }
-    }
 
-    public class ModelComparer : IEqualityComparer<Model>
-    {
-        public bool Equals(Model? x, Model? y)
+        public static void CopyProperties(Model source, Model target)
         {
-            if (x == null || y == null)
-                return false;
-
-            return x.Code == y.Code;
-        }
-
-        public int GetHashCode(Model obj)
-        {
-            return obj.Code.GetHashCode();
+            var properties = typeof(Model).GetProperties();
+            foreach (var property in properties)
+            {
+                if (property.CanWrite &&
+                    property.Name != nameof(ModelId) &&
+                    property.Name != nameof(BrandId))
+                {
+                    property.SetValue(target, property.GetValue(source));
+                }
+            }
         }
     }
 
@@ -47,9 +44,9 @@ namespace FipeConsumer.Domain.Entities
         }
 
         [JsonPropertyName("modelos")]
-        public required List<Model> Models { get; set; }
+        public required List<ModelDto> Models { get; set; }
 
         [JsonPropertyName("anos")]
-        public required List<Year> Years { get; set; }
+        public required List<YearDto> Years { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FipeConsumer.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class CreatingEntities : Migration
+    public partial class UpdatingEntities : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -1,5 +1,5 @@
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using FipeConsumer.Domain.Dtos;
 using FipeConsumer.Domain.Entities;
 
 namespace FipeConsumer.Infrastructure.ExternalServices
@@ -20,9 +20,16 @@ namespace FipeConsumer.Infrastructure.ExternalServices
         {
             try
             {
-                await Task.Delay(100);
-                var result = await _httpClient.GetFromJsonAsync<List<Brand>>($"{_baseUrl}marcas");
-                return result ?? [];
+                await Task.Delay(75);
+                var result = await _httpClient.GetFromJsonAsync<List<BrandDto>>($"{_baseUrl}marcas");
+
+                var brands = result?.Select(b => new Brand
+                {
+                    Code = b.Code,
+                    Name = b.Name
+                }).ToList();
+
+                return brands ?? [];
             }
             catch (Exception ex)
             {
@@ -34,9 +41,15 @@ namespace FipeConsumer.Infrastructure.ExternalServices
         {
             try
             {
-                await Task.Delay(100);
+                await Task.Delay(75);
                 var res = await _httpClient.GetFromJsonAsync<ModelResponse>($"{_baseUrl}marcas/{brandCode}/modelos");
-                var models = res?.Models;
+
+                var models = res?.Models.Select(m => new Model
+                {
+                    Code = m.Code,
+                    Name = m.Name,
+                }).ToList();
+
                 return models ?? [];
             }
             catch (Exception ex)
@@ -49,9 +62,16 @@ namespace FipeConsumer.Infrastructure.ExternalServices
         {
             try
             {
-                await Task.Delay(100);
-                var result = await _httpClient.GetFromJsonAsync<List<Year>>($"{_baseUrl}marcas/{brandCode}/modelos/{modelCode}/anos");
-                return result ?? [];
+                await Task.Delay(75);
+                var result = await _httpClient.GetFromJsonAsync<List<YearDto>>($"{_baseUrl}marcas/{brandCode}/modelos/{modelCode}/anos");
+
+                var years = result?.Select(y => new Year
+                {
+                    Code = y.Code,
+                    Name = y.Name
+                }).ToList();
+
+                return years ?? [];
             }
             catch (Exception ex)
             {
@@ -63,9 +83,22 @@ namespace FipeConsumer.Infrastructure.ExternalServices
         {
             try
             {
-                await Task.Delay(100);
-                var result = await _httpClient.GetFromJsonAsync<Price>($"{_baseUrl}marcas/{brandCode}/modelos/{modelCode}/anos/{yearCode}");
-                return result!;
+                await Task.Delay(75);
+                var result = await _httpClient.GetFromJsonAsync<PriceDto>($"{_baseUrl}marcas/{brandCode}/modelos/{modelCode}/anos/{yearCode}");
+
+                var price = new Price
+                {
+                    Value = result!.Value,
+                    BrandName = result!.BrandName,
+                    ModelName = result!.ModelName,
+                    ModelYear = result!.ModelYear,
+                    Fuel = result!.Fuel,
+                    FipeCode = result!.FipeCode,
+                    ReferenceMonth = result!.ReferenceMonth,
+                    FuelAbbreviation = result!.FuelAbbreviation,
+                };
+
+                return price;
             }
             catch (Exception ex)
             {
