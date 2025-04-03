@@ -1,0 +1,87 @@
+.grid {
+  width: 100%;
+
+  &__header {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .filter {
+      width: 100%;
+    }
+
+    .selectedItem {
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+
+      &__itemName {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        height: 35px;
+        flex: 1;
+
+        > span {
+          width: auto;
+          color: #2167c0;
+          white-space: nowrap;
+          font-weight: 600;
+        }
+
+        .removeButton {
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+  }
+
+  &__table {
+    width: 100%;
+    padding: 10px 0;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    box-shadow:
+      inset 0px 15px 10px -15px #aaa,
+      inset 0px -15px 10px -15px #aaa;
+
+    .gridElement {
+      max-height: 200px;
+      overflow-x: auto;
+    }
+
+    .tableRow {
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f6f6f6;
+        color: #2167c0;
+      }
+
+      &.selected {
+        background-color: #2167c0;
+        color: #fafafa;
+
+        &:hover {
+          background-color: #2166c0d0;
+        }
+      }
+
+      .tableData {
+        height: 30px;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+    }
+  }
+}

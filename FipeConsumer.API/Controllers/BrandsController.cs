@@ -14,6 +14,9 @@ namespace FipeConsumer.API.Controllers
         public async Task<IActionResult> Get()
         {
             var brands = await _service.GetBrandsAsync();
+            if (brands == null || brands.Count == 0)
+                return NotFound("No brands found.");
+
             return Ok(brands);
         }
     }
