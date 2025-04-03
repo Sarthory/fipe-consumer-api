@@ -39,7 +39,7 @@ $processes += $frontendProcess.Id
 Pop-Location
 Write-Host "Frontend started with PID $($frontendProcess.Id)"
 
-Start-Sleep -Seconds 5
+Start-Sleep -Seconds 10
 
 Write-Host "Opening the browser to http://localhost:5005/..."
 Start-Process "http://localhost:5005/"

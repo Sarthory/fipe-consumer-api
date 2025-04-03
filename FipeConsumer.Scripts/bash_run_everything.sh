@@ -16,14 +16,12 @@ echo "API started with PID $API_PID"
 # Navigate to the frontend directory, install dependencies, and start the frontend
 echo "Setting up the frontend..."
 cd ../FipeConsumer.Front || exit
-npm i &
-npm run build &
-npm run preview &
+npm install && npm run build && npm run preview &
 FRONTEND_PID=$!
 echo "Frontend started with PID $FRONTEND_PID"
 
 # Wait a few seconds to ensure the frontend server is up
-sleep 5
+sleep 10
 
 # Open the browser to the frontend URL
 echo "Opening the browser to http://localhost:5005/home..."
