@@ -10,7 +10,7 @@ This project consists in 3 layers:
 - API, located at ./FipeConsumer.API
 - Front, located at ./FipeConsumer.Front
 
-The worker, with a hourly job, requests and consumes the [Fipe API](#https://deividfortuna.github.io/fipe/) content and stores the data on a MSSQL instance.
+The worker, with a hourly job, requests and consumes the [Fipe API](https://deividfortuna.github.io/fipe/) content and stores the data on a MSSQL instance.
 
 The API serves the "cloned" data on 4 basic endpoints, Brands, Models, Years and Price.
 
