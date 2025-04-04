@@ -81,6 +81,8 @@ With the projects running, you should be able to:
 - Access the frontend to navigate and consult available car prices:
   - Visit http://localhost:5005/
 
+To see the presentation video of this software, [Click here](https://mega.nz/file/IkFTGKLa#ck9KWbyMScehO7HZrHDsJm-QslsvbVZnqSCUo-A29Ek)
+
 ## Contact
 
 **Felipe Sartori** - felipe@sartori.app
