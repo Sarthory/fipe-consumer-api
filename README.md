@@ -87,4 +87,4 @@ To see the presentation video of this software, [Click here](https://mega.nz/fil
 
 **Felipe Sartori** - felipe@sartori.app
 
-[Sartori Apps](#www.sartori.app) - [Linkedin](#https://www.linkedin.com/in/ff-sartori/)
+[Sartori Apps](https://www.sartori.app) - [Linkedin](#https://www.linkedin.com/in/ff-sartori/)
