@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useFipeConsumerStore } from '@/store/FipeConsumerStore';
 import { Model } from '@/types';
+import { scrollItemIntoView } from '@/utils';
 import { storeToRefs } from 'pinia';
+import { nextTick } from 'vue';
 
 const fipeStore = useFipeConsumerStore();
 const { filteredModels, modelFilter, selectedModel, yearFilter, selectedYear } =
@@ -13,6 +15,9 @@ const handleSelectedModel = (model: Model) => {
   } else {
     handleClearFilters();
     selectedModel.value = model;
+    nextTick(() => {
+      scrollItemIntoView(`list-item-${model.ModelId}`);
+    });
   }
 };
 
@@ -37,11 +42,15 @@ const handleClearFilters = () => {
         type="text"
         variant="solo"
         clearable
+        append-inner-icon="mdi-magnify"
         @click:clear="() => (modelFilter = '')"
       />
 
       <div class="selectedItem">
-        <span class="selectedItem__label text-body-1">Selected model:</span>
+        <span class="selectedItem__label text-body-1">
+          <v-icon class="icon" icon="mdi-car" />
+          <span>Selected model:</span>
+        </span>
 
         <div class="selectedItem__itemName">
           <span>{{ selectedModel?.Name || 'No model selected.' }}</span>
@@ -67,6 +76,7 @@ const handleClearFilters = () => {
             class="tableRow"
             :class="{ selected: selectedModel?.ModelId === model.ModelId }"
             @click="handleSelectedModel(model as Model)"
+            :id="`list-item-${model?.ModelId}`"
           >
             <td class="tableData">
               <div class="gridItem text-body-1">

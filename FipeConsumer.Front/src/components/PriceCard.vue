@@ -2,27 +2,35 @@
   <div class="vehicePrice">
     <v-card elevation="4" class="vehicePrice__card">
       <v-card variant="tonal" class="price">
-        <span class="text-h4"> {{ price.Value }} </span>
+        <span class="text-h4">
+          <v-icon class="icon" size="40" icon="mdi-cash-multiple" />
+          <span>{{ price?.Value }}</span>
+        </span>
       </v-card>
 
       <span class="item">
-        Brand: <strong>{{ price.BrandName }}</strong>
+        <v-icon class="icon" size="24" icon="mdi-domain" /> Brand:
+        <strong>{{ price?.BrandName }}</strong>
       </span>
       <span class="item">
-        Model: <strong>{{ price.ModelName }}</strong>
+        <v-icon class="icon" size="24" icon="mdi-car" /> Model:
+        <strong>{{ price?.ModelName }}</strong>
       </span>
       <span class="item">
-        Model year: <strong>{{ price.ModelYear }}</strong>
+        <v-icon class="icon" size="24" icon=" mdi-calendar-star-four-points" />
+        Model year:
+        <strong>{{ price?.ModelYear }}</strong>
       </span>
       <span class="item">
-        Fuel: <strong>{{ price.Fuel }}</strong>
+        <v-icon class="icon" size="24" icon="mdi-fuel" /> Fuel:
+        <strong>{{ price?.Fuel }}</strong>
       </span>
       <span class="item fipe">
         <span>
-          Fipe code: <strong class="code">{{ price.FipeCode }}</strong>
+          Fipe code: <strong class="code">{{ price?.FipeCode }}</strong>
         </span>
         <span class="reference">
-          Reference month: <strong>{{ price.ReferenceMonth }}</strong>
+          Reference month: <strong>{{ price?.ReferenceMonth }}</strong>
         </span>
       </span>
     </v-card>
@@ -63,12 +71,25 @@ const { price } = storeToRefs(fipeStore);
       > span {
         color: forestgreen;
         font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 15px;
+
+        .icon {
+          margin-top: -10px;
+        }
       }
     }
 
     .item {
       width: 100%;
       color: #444;
+
+      .icon {
+        margin-top: -5px;
+        color: #999;
+      }
 
       &.fipe {
         margin-top: 10px;

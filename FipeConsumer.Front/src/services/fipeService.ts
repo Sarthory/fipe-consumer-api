@@ -1,7 +1,8 @@
+import config from '@/config';
 import { Brand, Model, Price, Year } from '@/types';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5001/api/';
+const BASE_URL = config.apiBaseUrl;
 
 export const getBrands = async (): Promise<Brand[]> => {
   const response = await axios.get<Brand[]>(`${BASE_URL}Brands`);
@@ -10,13 +11,17 @@ export const getBrands = async (): Promise<Brand[]> => {
 };
 
 export const getModels = async (brandCode: String): Promise<Model[]> => {
-  const response = await axios.get<Model[]>(`${BASE_URL}Models?brandCode=${brandCode}`);
+  const response = await axios.get<Model[]>(
+    `${BASE_URL}Models?brandCode=${brandCode}`
+  );
 
   return response.data;
 };
 
 export const getYears = async (modelCode: Number): Promise<Year[]> => {
-  const response = await axios.get<Year[]>(`${BASE_URL}Years?modelCode=${modelCode}`);
+  const response = await axios.get<Year[]>(
+    `${BASE_URL}Years?modelCode=${modelCode}`
+  );
 
   return response.data;
 };

@@ -21,6 +21,14 @@
       justify-content: flex-start;
       gap: 10px;
 
+      .icon {
+        color: #999;
+        width: 20px;
+        height: 20px;
+        margin-top: -5px;
+        margin-right: 10px;
+      }
+
       &__itemName {
         display: flex;
         align-items: center;

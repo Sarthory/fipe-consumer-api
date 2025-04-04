@@ -16,12 +16,7 @@ namespace FipeConsumer.Infrastructure.Repositories
 
             if (lastJob == null || lastJob.Status != JobStatus.Running)
             {
-                var newJob = new Job
-                {
-                    Type = jobType,
-                    Status = JobStatus.Running,
-                    CreatedAt = DateTime.Now,
-                };
+                var newJob = new Job(jobType);                
 
                 await _context.Jobs.AddAsync(newJob);
                 await _context.SaveChangesAsync();
@@ -39,20 +34,16 @@ namespace FipeConsumer.Infrastructure.Repositories
 
             if (job != null)
             {
-                job.Status = status;
-                job.UpdatedAt = DateTime.Now;
+                job.SetStatus(status);
+                job.SetUpdatedAt(DateTime.Now);
 
-                if (status == JobStatus.Finished)
-                {
-                    job.FinishedAt = DateTime.Now;
-                    job.JobDuration = jobDuration;
-                }
+                if (status == JobStatus.Failed)
+                    job.FailJob(errorMessage!);
+                    
 
-                if (errorMessage != string.Empty)
-                {
-                    job.ErrorMessage = errorMessage;
-                }
-
+                else if (status == JobStatus.Finished)
+                    job.FinishJob(jobDuration!);
+            
                 _context.Jobs.Update(job);
                 await _context.SaveChangesAsync();
             }

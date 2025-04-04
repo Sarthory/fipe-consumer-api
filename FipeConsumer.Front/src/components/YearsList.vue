@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { useFipeConsumerStore } from '@/store/FipeConsumerStore';
 import { Year } from '@/types';
+import { scrollItemIntoView } from '@/utils';
 import { storeToRefs } from 'pinia';
+import { nextTick } from 'vue';
 
 const fipeStore = useFipeConsumerStore();
-const { filteredYears, yearFilter, selectedYear } = storeToRefs(fipeStore);
+const { filteredYears, yearFilter, selectedYear, price } =
+  storeToRefs(fipeStore);
 
 const handleSelectedYear = (year: Year) => {
   if (year.YearId === selectedYear.value?.YearId) {
@@ -12,12 +15,16 @@ const handleSelectedYear = (year: Year) => {
   } else {
     handleClearFilters();
     selectedYear.value = year;
+    nextTick(() => {
+      scrollItemIntoView(`list-item-${year.YearId}`);
+    });
   }
 };
 
 const handleClearFilters = () => {
   selectedYear.value = null;
   yearFilter.value = '';
+  price.value = null;
 };
 </script>
 
@@ -33,12 +40,16 @@ const handleClearFilters = () => {
         placeholder="Start typing to filter model years..."
         type="text"
         variant="solo"
+        append-inner-icon="mdi-magnify"
         clearable
         @click:clear="() => (yearFilter = '')"
       />
 
       <div class="selectedItem">
-        <span class="selectedItem__label text-body-1">Selected year:</span>
+        <span class="selectedItem__label text-body-1">
+          <v-icon class="icon" icon="mdi-calendar-star-four-points" />
+          <span>Selected year:</span>
+        </span>
 
         <div class="selectedItem__itemName">
           <span>{{ selectedYear?.Name || 'No year selected.' }}</span>
@@ -64,6 +75,7 @@ const handleClearFilters = () => {
             class="tableRow"
             :class="{ selected: selectedYear?.YearId === year.YearId }"
             @click="handleSelectedYear(year as Year)"
+            :id="`list-item-${year?.YearId}`"
           >
             <td class="tableData">
               <div class="gridItem text-body-1">

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FipeConsumer.Infrastructure.Migrations
 {
     [DbContext(typeof(FipeConsumerDbContext))]
-    [Migration("20250401014543_UpdatingEntities")]
+    [Migration("20250404183328_UpdatingEntities")]
     partial class UpdatingEntities
     {
         /// <inheritdoc />
@@ -60,7 +60,7 @@ namespace FipeConsumer.Infrastructure.Migrations
                     b.Property<string>("ErrorMessage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("FinishedAt")
+                    b.Property<DateTime?>("FinishedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("JobDuration")
@@ -72,7 +72,7 @@ namespace FipeConsumer.Infrastructure.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("JobId");
@@ -88,7 +88,7 @@ namespace FipeConsumer.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ModelId"));
 
-                    b.Property<int>("BrandId")
+                    b.Property<int?>("BrandId")
                         .HasColumnType("int");
 
                     b.Property<int>("Code")
@@ -113,7 +113,7 @@ namespace FipeConsumer.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PriceId"));
 
-                    b.Property<int>("BrandId")
+                    b.Property<int?>("BrandId")
                         .HasColumnType("int");
 
                     b.Property<string>("BrandName")
@@ -132,7 +132,7 @@ namespace FipeConsumer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ModelId")
+                    b.Property<int?>("ModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("ModelName")
@@ -150,7 +150,7 @@ namespace FipeConsumer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("YearId")
+                    b.Property<int?>("YearId")
                         .HasColumnType("int");
 
                     b.HasKey("PriceId");
@@ -176,7 +176,7 @@ namespace FipeConsumer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ModelId")
+                    b.Property<int?>("ModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -194,9 +194,7 @@ namespace FipeConsumer.Infrastructure.Migrations
                 {
                     b.HasOne("FipeConsumer.Domain.Entities.Brand", "Brand")
                         .WithMany()
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BrandId");
 
                     b.Navigation("Brand");
                 });
@@ -206,20 +204,17 @@ namespace FipeConsumer.Infrastructure.Migrations
                     b.HasOne("FipeConsumer.Domain.Entities.Brand", "Brand")
                         .WithMany()
                         .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("FipeConsumer.Domain.Entities.Model", "Model")
                         .WithMany()
                         .HasForeignKey("ModelId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("FipeConsumer.Domain.Entities.Year", "Year")
                         .WithMany()
                         .HasForeignKey("YearId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Brand");
 
@@ -232,9 +227,7 @@ namespace FipeConsumer.Infrastructure.Migrations
                 {
                     b.HasOne("FipeConsumer.Domain.Entities.Model", "Model")
                         .WithMany()
-                        .HasForeignKey("ModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ModelId");
 
                     b.Navigation("Model");
                 });

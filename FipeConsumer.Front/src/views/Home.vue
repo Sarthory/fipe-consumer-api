@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue';
+import { nextTick, onBeforeMount, ref } from 'vue';
 import BrandsList from '@/components/BrandsList.vue';
 import {
   VStepperVertical,
@@ -11,6 +11,7 @@ import { storeToRefs } from 'pinia';
 import YearsList from '@/components/YearsList.vue';
 import PriceCard from '@/components/PriceCard.vue';
 import { Steps } from '@/enums/steps';
+import { scrollItemIntoView } from '@/utils';
 
 const fipeStore = useFipeConsumerStore();
 const {
@@ -23,7 +24,7 @@ const {
   fetchPrice,
   handleClearFilters,
 } = fipeStore;
-const { selectedBrand, selectedModel, selectedYear, isLoading } =
+const { selectedBrand, selectedModel, selectedYear, isLoading, price } =
   storeToRefs(fipeStore);
 
 onBeforeMount(() => {
@@ -33,12 +34,28 @@ onBeforeMount(() => {
 const currentStep = ref<Steps>(Steps.Brand);
 
 const goToStep = async (step: Steps) => {
+  let listItemId: String;
+
   switch (step) {
+    case Steps.Brand: {
+      clearModels;
+      clearYears;
+      clearPrice;
+
+      if (selectedBrand.value !== null)
+        listItemId = `list-item-${selectedBrand.value.BrandId}`;
+
+      break;
+    }
+
     case Steps.Model: {
       clearModels;
       clearYears;
       clearPrice;
       await fetchModels(selectedBrand.value.Code);
+
+      if (selectedModel.value !== null)
+        listItemId = `list-item-${selectedModel.value.ModelId}`;
       break;
     }
 
@@ -46,6 +63,10 @@ const goToStep = async (step: Steps) => {
       clearYears;
       clearPrice;
       await fetchYears(selectedModel.value.Code);
+
+      if (selectedYear.value !== null)
+        listItemId = `list-item-${selectedYear.value.YearId}`;
+
       break;
     }
 
@@ -61,6 +82,10 @@ const goToStep = async (step: Steps) => {
   }
 
   currentStep.value = step;
+
+  nextTick(() => {
+    scrollItemIntoView(listItemId);
+  });
 };
 
 function resetStepper() {
@@ -83,6 +108,12 @@ function resetStepper() {
           "
           title="Brand"
           editable
+          ripple
+          @click="
+            () =>
+              selectedBrand &&
+              scrollItemIntoView(`list-item-${selectedBrand.BrandId}`)
+          "
           :value="Steps.Brand"
         >
           <!-- List element -->
@@ -115,6 +146,12 @@ function resetStepper() {
           "
           title="Model"
           :value="Steps.Model"
+          ripple
+          @click="
+            () =>
+              selectedModel &&
+              scrollItemIntoView(`list-item-${selectedModel.ModelId}`)
+          "
         >
           <!-- List element -->
           <ModelsList />
@@ -155,6 +192,12 @@ function resetStepper() {
             Boolean(selectedBrand !== null)
           "
           :value="Steps.Year"
+          ripple
+          @click="
+            () =>
+              selectedYear &&
+              scrollItemIntoView(`list-item-${selectedYear.YearId}`)
+          "
         >
           <!-- List element -->
           <YearsList />
@@ -188,8 +231,10 @@ function resetStepper() {
           :editable="
             Boolean(selectedYear !== null) &&
             Boolean(selectedModel !== null) &&
-            Boolean(selectedBrand !== null)
+            Boolean(selectedBrand !== null) &&
+            Boolean(price !== null)
           "
+          ripple
           :value="Steps.Price"
         >
           <!-- Result element -->

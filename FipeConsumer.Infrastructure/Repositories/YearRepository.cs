@@ -31,12 +31,15 @@ namespace FipeConsumer.Infrastructure.Repositories
 
             var model = await _context.Models.FirstOrDefaultAsync(m => m.Code == modelCode) ?? throw new Exception("Model not found.");
 
-            year.Model = model;
+            year.SetModelId(model.ModelId);
 
             if (existingYear == null) _context.Years.Add(year);
             else
             {
-                Year.CopyProperties(year, existingYear);
+                existingYear.SetModelId(model.ModelId);
+                existingYear.SetCode(year.Code);
+                existingYear.SetName(year.Name);                
+
                 _context.Years.Update(existingYear);
             }
 
@@ -55,7 +58,8 @@ namespace FipeConsumer.Infrastructure.Repositories
 
                 foreach (var year in years)
                 {
-                    year.Model = model;
+                    year.SetModelId(model.ModelId);
+
                     var existingYear = existingYears?.FirstOrDefault(y => y.Code == year.Code &&
                                                                      y.Model != null &&
                                                                      y.Model.Code == modelCode);
@@ -63,7 +67,9 @@ namespace FipeConsumer.Infrastructure.Repositories
                     if (existingYear == null) _context.Years.Add(year);
                     else
                     {
-                        Year.CopyProperties(year, existingYear);
+                        existingYear.SetModelId(model.ModelId);
+                        existingYear.SetCode(year.Code);
+                        
                         _context.Years.Update(existingYear);
                     }
                 }

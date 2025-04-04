@@ -2,12 +2,12 @@ using System.Text.Json.Serialization;
 
 namespace FipeConsumer.Domain.Dtos
 {
-    public class BrandDto
+    public struct BrandDto
     {
         [JsonPropertyName("codigo")]
-        public required string Code { get; set; }
+        public string Code { get; set; }
 
         [JsonPropertyName("nome")]
-        public required string Name { get; set; }
+        public string Name { get; set; }
     }
 }

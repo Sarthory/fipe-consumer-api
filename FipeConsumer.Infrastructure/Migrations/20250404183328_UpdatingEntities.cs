@@ -34,8 +34,8 @@ namespace FipeConsumer.Infrastructure.Migrations
                     Type = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FinishedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    FinishedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     JobDuration = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -52,7 +52,7 @@ namespace FipeConsumer.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BrandId = table.Column<int>(type: "int", nullable: false)
+                    BrandId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -61,8 +61,7 @@ namespace FipeConsumer.Infrastructure.Migrations
                         name: "FK_Models_Brands_BrandId",
                         column: x => x.BrandId,
                         principalTable: "Brands",
-                        principalColumn: "BrandId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "BrandId");
                 });
 
             migrationBuilder.CreateTable(
@@ -73,7 +72,7 @@ namespace FipeConsumer.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModelId = table.Column<int>(type: "int", nullable: false)
+                    ModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -82,8 +81,7 @@ namespace FipeConsumer.Infrastructure.Migrations
                         name: "FK_Years_Models_ModelId",
                         column: x => x.ModelId,
                         principalTable: "Models",
-                        principalColumn: "ModelId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ModelId");
                 });
 
             migrationBuilder.CreateTable(
@@ -100,9 +98,9 @@ namespace FipeConsumer.Infrastructure.Migrations
                     FipeCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReferenceMonth = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FuelAbbreviation = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BrandId = table.Column<int>(type: "int", nullable: false),
-                    ModelId = table.Column<int>(type: "int", nullable: false),
-                    YearId = table.Column<int>(type: "int", nullable: false)
+                    BrandId = table.Column<int>(type: "int", nullable: true),
+                    ModelId = table.Column<int>(type: "int", nullable: true),
+                    YearId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

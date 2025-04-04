@@ -9,9 +9,6 @@
         <router-view />
       </div>
     </main>
-    <footer class="fipeApplication__footer">
-      <span>Felipe Sartori - {{ new Date().getFullYear() }}</span>
-    </footer>
   </div>
 </template>
 
@@ -30,7 +27,7 @@
     gap: 20px;
     background-color: #ddd;
     color: #444;
-    padding: 8px;
+    padding: 4px;
     z-index: 2;
     box-shadow: 0px 2px 8px 2px #999;
   }
@@ -46,15 +43,6 @@
       padding: 20px;
       max-width: 800px;
     }
-  }
-
-  &__footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #ddd;
-    color: #444;
-    padding: 4px;
   }
 }
 </style>

@@ -37,14 +37,25 @@ namespace FipeConsumer.Infrastructure.Repositories
             var model = await _context.Models.FirstOrDefaultAsync(m => m.Code == modelCode) ?? throw new Exception("Model not found.");
             var year = await _context.Years.FirstOrDefaultAsync(y => y.Code == yearCode) ?? throw new Exception("Year not found.");
 
-            price.Brand = brand;
-            price.Model = model;
-            price.Year = year;
+            price.SetBrandId(brand.BrandId);
+            price.SetModelId(model.ModelId);
+            price.SetYearId(year.YearId);          
 
             if (existingPrice == null) _context.Prices.Add(price);
             else
             {
-                Price.CopyProperties(price, existingPrice);
+                existingPrice.SetValue(price.Value!);
+                existingPrice.SetBrandName(price.BrandName);
+                existingPrice.SetModelName(price.ModelName);
+                existingPrice.SetModelYear(price.ModelYear);
+                existingPrice.SetFuel(price.Fuel);
+                existingPrice.SetFipeCode(price.FipeCode);
+                existingPrice.SetReferenceMonth(price.ReferenceMonth);
+                existingPrice.SetFuelAbbreviation(price.FuelAbbreviation);
+                existingPrice.SetBrandId(brand.BrandId);
+                existingPrice.SetModelId(model.ModelId);
+                existingPrice.SetYearId(year.YearId);
+                
                 _context.Prices.Update(existingPrice);
             }
 

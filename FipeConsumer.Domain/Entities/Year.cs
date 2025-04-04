@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using FipeConsumer.Domain.Exceptions;
 
 namespace FipeConsumer.Domain.Entities
 {
@@ -7,29 +8,57 @@ namespace FipeConsumer.Domain.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int YearId { get; set; }
+        public int YearId { get; private set; }
 
-        public required string Code { get; set; }
+        public string Code { get; private set; } = string.Empty;
 
-        public required string Name { get; set; }
+        public string Name { get; private set; } = string.Empty;
 
         [ForeignKey("Model")]
-        public int ModelId { get; set; }
+        public int? ModelId { get; private set; }
 
-        public virtual Model? Model { get; set; }
+        public virtual Model? Model { get; private set; }
 
-        public static void CopyProperties(Year source, Year target)
+        private Year() { } 
+
+        public Year(string code, string name)
         {
-            var properties = typeof(Year).GetProperties();
-            foreach (var property in properties)
+            SetCode(code);
+            SetName(name);
+        }
+
+        public void SetCode(string code)
+        {
+            if (string.IsNullOrWhiteSpace(code))
             {
-                if (property.CanWrite &&
-                    property.Name != nameof(YearId) &&
-                    property.Name != nameof(ModelId))
-                {
-                    property.SetValue(target, property.GetValue(source));
-                }
+                throw new DomainException("Year code cannot be null or empty.");
             }
+
+            Code = code;
+        }
+
+        public void SetName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new DomainException("Year name cannot be null or empty.");
+            }
+
+            Name = name;
+        }
+
+        public void SetModelId(int modelId)
+        {
+            if (modelId <= 0)
+            {
+                throw new DomainException("ModelId must be greater than zero.");
+            }
+            ModelId = modelId;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} ({Code})";
         }
     }
 }

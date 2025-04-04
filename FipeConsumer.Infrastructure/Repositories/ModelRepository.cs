@@ -26,12 +26,15 @@ namespace FipeConsumer.Infrastructure.Repositories
         {
             var existingModel = await _context.Models.FirstOrDefaultAsync(m => m.Code == model.Code);
             var brand = await _context.Brands.FirstOrDefaultAsync(m => m.Code == brandCode) ?? throw new Exception("Brand not found");
-            model.Brand = brand;
+            model.SetBrandId(brand.BrandId);
 
             if (existingModel == null) _context.Models.Add(model);
             else
             {
-                Model.CopyProperties(model, existingModel);
+                existingModel.SetCode(model.Code);
+                existingModel.SetName(model.Name);
+                existingModel.SetBrandId(brand.BrandId);
+
                 _context.Models.Update(existingModel);
             }
 
@@ -50,13 +53,16 @@ namespace FipeConsumer.Infrastructure.Repositories
 
                 foreach (var model in models)
                 {
-                    model.Brand = brand;
+                    model.SetBrandId(brand.BrandId);
                     var existingModel = existingModels?.FirstOrDefault(m => m.Code == model.Code);
 
                     if (existingModel == null) _context.Models.Add(model);
                     else
                     {
-                        Model.CopyProperties(model, existingModel);
+                        existingModel.SetCode(model.Code);
+                        existingModel.SetName(model.Name);
+                        existingModel.SetBrandId(brand.BrandId);                       
+
                         _context.Models.Update(existingModel);
                     }
                 }

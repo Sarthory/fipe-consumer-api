@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useFipeConsumerStore } from '@/store/FipeConsumerStore';
 import { Brand } from '@/types';
+import { scrollItemIntoView } from '@/utils';
 import { storeToRefs } from 'pinia';
+import { nextTick, onUpdated } from 'vue';
 
 const fipeStore = useFipeConsumerStore();
 const { handleClearFilters } = fipeStore;
@@ -13,6 +15,9 @@ const handleSelectBrand = (brand: Brand) => {
   } else {
     handleClearFilters();
     selectedBrand.value = brand;
+    nextTick(() => {
+      scrollItemIntoView(`list-item-${brand.BrandId}`);
+    });
   }
 };
 </script>
@@ -30,11 +35,15 @@ const handleSelectBrand = (brand: Brand) => {
         type="text"
         variant="solo"
         clearable
+        append-inner-icon="mdi-magnify"
         @click:clear="() => (brandFilter = '')"
       />
 
       <div class="selectedItem">
-        <span class="selectedItem__label text-body-1">Selected brand:</span>
+        <span class="selectedItem__label text-body-1">
+          <v-icon class="icon" icon="mdi-domain" />
+          <span>Selected brand:</span>
+        </span>
 
         <div class="selectedItem__itemName">
           <span>{{ selectedBrand?.Name || 'No brand selected.' }}</span>
@@ -60,6 +69,7 @@ const handleSelectBrand = (brand: Brand) => {
             class="tableRow"
             :class="{ selected: selectedBrand?.BrandId === brand.BrandId }"
             @click="handleSelectBrand(brand as Brand)"
+            :id="`list-item-${brand?.BrandId}`"
           >
             <td class="tableData">
               <div class="gridItem text-body-1">

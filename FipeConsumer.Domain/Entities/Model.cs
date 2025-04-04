@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using FipeConsumer.Domain.Dtos;
+using FipeConsumer.Domain.Exceptions;
 
 namespace FipeConsumer.Domain.Entities
 {
@@ -9,44 +10,66 @@ namespace FipeConsumer.Domain.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ModelId { get; set; }
+        public int ModelId { get; private set; }
 
-        public required int Code { get; set; }
+        public int Code { get; private set; } = 0;
 
-        public required string Name { get; set; }
+        public string Name { get; private set; } = String.Empty;
 
         [ForeignKey("Brand")]
-        public int BrandId { get; set; }
+        public int? BrandId { get; private set; } = null;
 
-        public virtual Brand? Brand { get; set; }
+        public virtual Brand? Brand { get; private set; } = null;
 
-        public static void CopyProperties(Model source, Model target)
+        public Model() { }
+
+        public Model(int code, string name)
         {
-            var properties = typeof(Model).GetProperties();
-            foreach (var property in properties)
+            SetCode(code);
+            SetName(name);            
+        }
+
+        public void SetCode(int code)
+        {
+            if (code <= 0)
             {
-                if (property.CanWrite &&
-                    property.Name != nameof(ModelId) &&
-                    property.Name != nameof(BrandId))
-                {
-                    property.SetValue(target, property.GetValue(source));
-                }
+                throw new DomainException("Model code must be greater than zero.");
             }
+
+            Code = code;
+        }
+
+        public void SetName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new DomainException("Model name cannot be null or empty.");
+            }
+
+            Name = name;
+        }
+
+        public void SetBrandId(int brandId)
+        {
+            if (brandId <= 0)
+            {
+                throw new DomainException("BrandId must be greater than zero.");
+            }
+            BrandId = brandId;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} ({Code})";
         }
     }
 
-    public class ModelResponse
+    public readonly struct ModelResponse(List<ModelDto> models, List<YearDto> years)
     {
-        public ModelResponse()
-        {
-            Models = [];
-            Years = [];
-        }
-
         [JsonPropertyName("modelos")]
-        public required List<ModelDto> Models { get; set; }
+        public required List<ModelDto> Models { get; init; } = models;
 
         [JsonPropertyName("anos")]
-        public required List<YearDto> Years { get; set; }
+        public required List<YearDto> Years { get; init; } = years;
     }
 }
