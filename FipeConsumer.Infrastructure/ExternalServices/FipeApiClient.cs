@@ -20,7 +20,7 @@ using System.Net.Http.Json;
          {
              try
              {
-                 await Task.Delay(75);
+                 await Task.Delay(100);
                  var result = await _httpClient.GetFromJsonAsync<List<BrandDto>>($"marcas");
 
                  var brands = result?.Select(b => new Brand(b.Code, b.Name)).ToList();
@@ -37,7 +37,7 @@ using System.Net.Http.Json;
          {
              try
              {
-                 await Task.Delay(75);
+                 await Task.Delay(100);
                  var res = await _httpClient.GetFromJsonAsync<ModelResponse>($"marcas/{brandCode}/modelos");
 
                  var models = res.Models.Select(m => new Model(m.Code, m.Name)).ToList();
@@ -54,7 +54,7 @@ using System.Net.Http.Json;
          {
              try
              {
-                 await Task.Delay(75);
+                 await Task.Delay(100);
                  var result = await _httpClient.GetFromJsonAsync<List<YearDto>>($"marcas/{brandCode}/modelos/{modelCode}/anos");
 
                  var years = result?.Select(y => new Year(y.Code, y.Name)).ToList();
@@ -71,7 +71,7 @@ using System.Net.Http.Json;
          {
              try
              {
-                 await Task.Delay(75);
+                 await Task.Delay(100);
                  var result = await _httpClient.GetFromJsonAsync<PriceDto>($"marcas/{brandCode}/modelos/{modelCode}/anos/{yearCode}");
 
                  var price = new Price(
