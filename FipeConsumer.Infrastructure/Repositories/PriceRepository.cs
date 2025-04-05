@@ -16,22 +16,17 @@ namespace FipeConsumer.Infrastructure.Repositories
 
         public async Task<Price?> GetSpecificPriceAsync(string brandCode, int modelCode, string yearCode)
         {
-            return await _context.Prices.Include(m => m.Brand)
-                                        .Include(m => m.Model)
-                                        .Include(m => m.Year)
-                                        .FirstOrDefaultAsync(m => m.Brand != null && m.Brand.Code == brandCode &&
-                                                                  m.Model != null && m.Model.Code == modelCode &&
-                                                                  m.Year != null && m.Year.Code == yearCode);
-        }
-
-        public async Task UpsertPriceAsync(Price price, string brandCode, int modelCode, string yearCode)
-        {
-            var existingPrice = await _context.Prices.Include(p => p.Brand)
+            return await _context.Prices.Include(p => p.Brand)
                                                      .Include(p => p.Model)
                                                      .Include(p => p.Year)
                                                      .FirstOrDefaultAsync(p => p.Brand != null && p.Brand.Code == brandCode &&
                                                                                p.Model != null && p.Model.Code == modelCode &&
                                                                                p.Year != null && p.Year.Code == yearCode);
+        }
+
+        public async Task UpsertPriceAsync(Price price, string brandCode, int modelCode, string yearCode)
+        {
+            var existingPrice = await GetSpecificPriceAsync(brandCode, modelCode, yearCode);
 
             var brand = await _context.Brands.FirstOrDefaultAsync(b => b.Code == brandCode) ?? throw new Exception("Brand not found.");
             var model = await _context.Models.FirstOrDefaultAsync(m => m.Code == modelCode) ?? throw new Exception("Model not found.");

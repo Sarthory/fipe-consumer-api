@@ -1,22 +1,14 @@
 using System.Net.Http.Json;
  using FipeConsumer.Domain.Dtos;
  using FipeConsumer.Domain.Entities;
- using FipeConsumer.Infrastructure.Configuration;
 
  namespace FipeConsumer.Infrastructure.ExternalServices
  {
-     public class FipeApiClient
-     {
-         private readonly HttpClient _httpClient;
-         private readonly FipeApiConfig _config;
+     public class FipeApiClient(HttpClient httpClient)
+    {
+         private readonly HttpClient _httpClient = httpClient;
 
-         public FipeApiClient(HttpClient httpClient, FipeApiConfig config)
-         {
-             _httpClient = httpClient;
-             _config = config;
-         }
-
-         public async Task<List<Brand>> GetBrandsAsync()
+        public async Task<List<Brand>> GetBrandsAsync()
          {
              try
              {
